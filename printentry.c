@@ -1,78 +1,70 @@
-/* This function just demonstrates if addentry works*/
-#include"libman.h"
 #include<stdio.h>
-#include<stdlib.h>
+#include"libman.h"
+void printbook(Book *b) {
+	printf("\n\tID : %d\n\tNAME : %s\n\tAUTHOR : %s\n\tQUANTITY : %d\n\tPRICE : %.2f\n\tRACK NO : %d\n\t",
+		b->id, b->name, b->author, b->quantity, b->price, b->rackno);
+}
 void printentry() {
-	int ch, i = 0;
 	FILE *fp;
-	Book *printbook;
+	int c;
+	char ch;
+	Book b;
 	system("clear");
 	printgen();
-	scanf("%d",&ch);
-	switch(ch){
-		
-		case FICTION:
-			fp = fopen("Fiction.txt","r");
-			if(i == 0) 
-				printbook = (Book *)malloc(sizeof(Book));
-			
-			else
-				printbook = (Book *)realloc(printbook,sizeof(Book)*(i+1));	
-			
-			while((fread(&printbook[i], sizeof(Book), 1, fp)) == 1) {
-				printf("Entry : %d\n\nName: %s\nAuthor : %s\nQuantity : %d\nPrice : %f\n\n",i+1, printbook[i].name, printbook[i].author, printbook[i].quantity,printbook[i].price);
-			
-			i++;
-			}
-			break;
-
-		 case NONFICTION:
-                        fp = fopen("Non-fiction.txt","r");
-                        if(i == 0)
-                                printbook = (Book *)malloc(sizeof(Book));
-
-                        else
-                                printbook = (Book *)realloc(printbook,sizeof(Book)*(i+1));
-
-                        while((fread(&printbook[i], sizeof(Book), 1, fp)) == 1) {
-                                printf("Entry : %d\n\nName: %s\nAuthor : %s\nQuantity : %d\nPrice : %f\n\n",i+1, printbook[i].name, printbook[i].author, printbook[i].quantity,printbook[i].price);
-
-                        i++;
-                        }
-                        break;
-
-		 case REFERENCE:
-                        fp = fopen("Reference.txt","r");
-                        if(i == 0)
-                                printbook = (Book *)malloc(sizeof(Book));
-
-                        else
-                                printbook = (Book *)realloc(printbook,sizeof(Book)*(i+1));
-
-                        while((fread(&printbook[i], sizeof(Book), 1, fp)) == 1) {
-                                printf("Entry : %d\n\nName: %s\nAuthor : %s\nQuantity : %d\nPrice : %f\n\n",i+1, printbook[i].name, printbook[i].author, printbook[i].quantity,printbook[i].price);
-
-                        i++;
-                        }
-                        break;
-
-		 case SELFHELP:
-                        fp = fopen("Self-help.txt","r");
-                        if(i == 0)
-                                printbook = (Book *)malloc(sizeof(Book));
-
-                        else
-                                printbook = (Book *)realloc(printbook,sizeof(Book)*(i+1));
-
-                        while((fread(&printbook[i], sizeof(Book), 1, fp)) == 1) {
-                                printf("Entry : %d\n\nName: %s\nAuthor : %s\nQuantity : %d\nPrice : %f\n\n",i+1, printbook[i].name, printbook[i].author, printbook[i].quantity,printbook[i].price);
-
-                        i++;
-                        }
-                        break;
-
-
-
-		}
+	scanf("%d", &c);
+	switch(c) {
+		case FICTION :
+				fp = fopen("Fiction.dat","rb");
+				while(fread(&b, sizeof(b), 1, fp) == 1){
+					printbook(&b);
+				}
+				printf("Go to main menu ? (y/n) ");
+				scanf(" %c", &ch);
+				if(ch == 'y' || ch == 'Y') {
+					mainmenu();
+					return;
+				}
+				break;
+		case NONFICTION : 
+				fp = fopen("Nonfiction.dat","rb");
+                                while(fread(&b, sizeof(b), 1, fp) == 1) {
+                                        printbook(&b);
+                                }
+				printf("Go to main menu ? (y/n) ");
+                                scanf(" %c", &ch);
+                                if(ch == 'y' || ch == 'Y') {
+                                        mainmenu();
+                                        return;
+                                }
+				break;
+		case REFERENCE :
+				 fp = fopen("Reference.dat","rb");
+                                 while(fread(&b, sizeof(b), 1, fp) == 1) {
+                                        printbook(&b);
+                                }
+				printf("Go to main menu ? (y/n) ");
+                                scanf(" %c", &ch);
+                                if(ch == 'y' || ch == 'Y') {
+                                        mainmenu();
+                                        return;
+                                }
+				break;
+		case SELFHELP :
+				 fp = fopen("Selfhelp.dat","rb");
+                               	 while(fread(&b, sizeof(b), 1, fp) == 1) {
+                                        printbook(&b);
+                                }
+				printf("Go to main menu ? (y/n) ");
+                                scanf(" %c", &ch);
+                                if(ch == 'y' || ch == 'Y') {
+                                        mainmenu();
+                                        return;
+                                }
+				break;
+		default :
+			printf("\n ~~~~~ Wrong option. Select again ~~~~~\n\n");
+			printentry();
+			return;
+	}
 }
 			

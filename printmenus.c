@@ -7,7 +7,7 @@ void printgen() {
     printf("\t\t 3. Reference\n");
     printf("\t\t 4. Self-help\n");
     printf("\t\t 5. Back to main menu\n\n");
-    printf("Enter your choice:");
+    printf("\tEnter your choice:");
 }
 void printfiction() {
 	printf("\t\tSELECT SUBCATEGORY\n\n");
@@ -42,5 +42,9 @@ void printselfhelp() {
         printf("\t\t 5. Encyclopaedias\n");
         printf("Enter your choice");
 }
-
-	
+void intro() {
+	system("clear");
+	printf("\t\t ~*~*~*~*~* WELCOME *~*~*~*~*~\n\n");
+	printf("\tPlease select an option\n");
+	printf("\t1. Add books\n\t2. Display books\n\t3. Search a book\n\t4. Delete a record\n\t5. Edit a record\n\t6. Issue a book\n\t7. Return a book\n\t8. Close application\n");
+}	
