@@ -30,7 +30,7 @@ void addentry(){
 					printfiction();
 					scanf("%d",&fict);
 				        fp=fopen("Fiction.dat","ab+");
-					if(getdata(&book)){
+					if(getinfo(&book)){
 						book.cat = categories[s - 1];
 						book.subcat = fiction[fict - 1];
    						 fseek(fp,0,SEEK_END);
@@ -41,7 +41,7 @@ void addentry(){
 			case NONFICTION :
 					system("clear");
 					fp=fopen("Nonfiction.dat","wb+");
-                	                if(getdata(&book) == 1){
+                	                if(getinfo(&book) == 1){
                         	                 book.cat = categories[s-1];
                                 	         book.subcat = categories[s-1];
                                         	 fseek(fp,0,SEEK_END);
@@ -54,7 +54,7 @@ void addentry(){
 					printref();
 					scanf("%d",&ref);
 					 fp=fopen("Reference.dat","wb+");
-                               		 if(getdata(&book) == 1){
+                               		 if(getinfo(&book) == 1){
                                         	 book.cat = categories[s-1];
                                         	 book.subcat = refer[ref - 1]; 
                                         	 fseek(fp,0,SEEK_END);
@@ -68,7 +68,7 @@ void addentry(){
 					printselfhelp();
 					scanf("%d",&sh);
 				 	fp=fopen("Selfhelp.dat","wb+");
-                                	if(getdata(&book) == 1){
+                                	if(getinfo(&book) == 1){
                                         	 book.cat = categories[s-1];
                                         	 book.subcat = selfhelp[sh - 1];
                                         	 fseek(fp,0,SEEK_END);
@@ -81,7 +81,7 @@ void addentry(){
 					return;
 					break;
 			default :
-				printf("\n -.-.-. Wrong option. Select again .-.-.-\n");
+				printf("\n ----- Wrong option. Please select again -----\n");
 				addentry();
 				return;
 		}
@@ -92,7 +92,7 @@ void addentry(){
 	}
 }
 
-int getdata(Book *book)
+int getinfo(Book *book)
 {
     int t;
     system("clear");

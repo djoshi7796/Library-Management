@@ -32,7 +32,7 @@ void editentry();
 void searchentry();
 void issuebooks();
 void returnbooks();
-int  getdata(Book *b);
+int  getinfo(Book *b);
 void Password();
 int calcfine(date, date);
 
