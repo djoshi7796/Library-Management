@@ -17,9 +17,9 @@ void issue(student *std, Book *b, FILE *fp, FILE *ft, int id, int *found) {
 		printf("\tRecord available\n");
 		printf("\tBook name : %s\n", b->name);
 		printf("\tNo of copies on shelf : %d\n", b->quantity);
-		printf("\tEnter name : \n");
+		printf("\tEnter name : ");
 		scanf("%s", std->name);
-		printf("\tEnter Roll NO.\n");
+		printf("\tEnter Roll NO.");
 		scanf("%ld",&std->roll);
 		std->issued = *b;
 		std->issue_date.day = todate->tm_mday;
@@ -36,11 +36,14 @@ void issue(student *std, Book *b, FILE *fp, FILE *ft, int id, int *found) {
 			std->due_date.year += 1;
 			std->due_date.month -= 12;
 		}
+		printf("\tISSUED ON : %d - %d - %d\n", std->issue_date.day, std->issue_date.month, std->issue_date.year);
+		printf("\tDUE DATE : %d - %d - %d\n", std->due_date.day, std->due_date.month, std->due_date.year);
 		std->issued.quantity = 0;
 		b->quantity = b->quantity - 1;
 		fseek(fp, ftell(fp) - sizeof(Book), 0);
 		fwrite(b, sizeof(Book), 1, fp);
 		fwrite(std, sizeof(student), 1, ft);
+		*found = 1;
 	}
 }
 		
@@ -48,48 +51,60 @@ void issuebooks() {
 	FILE *fp, *fis;
 	student std;
 	Book b;
+	char option = 'y';
 	system("clear");
-	printf("\t\t\t~~~~~~~~ ISSUE BOOKS ~~~~~~~~\n\n");
-	printgen();
-	int c, id, found = 0;
-	scanf("%d",&c);
-	switch(c) {
-		case FICTION : 
-				fp = fopen("Fiction.dat","rb++");
-				fis = fopen("Issuefict.dat","ab+");
-				printf("\tEnter id\n");
-				scanf("%d", &id);
-				while(fread(&b, sizeof(b), 1, fp) == 1)
-					issue(&std, &b, fp, fis, id, &found);
-					
-		break;
-		case NONFICTION :
-				fp = fopen("Nonfiction.dat","rb+"); 
-                                fis = fopen("Issuenfict.dat","ab+");     
-                                printf("\tEnter id\n"); 
-                                scanf("%d", &id);
-                                while(fread(&b, sizeof(b), 1, fp) == 1)
-                                        issue(&std, &b, fp, fis, id, &found);
-		break;
-		case REFERENCE :
-				fp = fopen("Reference.dat","rb+"); 
-                                fis = fopen("Issueref.dat","ab+");     
-                                printf("\tEnter id\n"); 
-                                scanf("%d", &id);
-                                while(fread(&b, sizeof(b), 1, fp) == 1)
-                                        issue(&std, &b, fp, fis, id, &found);
-		break;
-		case SELFHELP:
-				fp = fopen("Selfhelp.dat","rb+"); 
-                                fis = fopen("Issuesh.dat","ab+");     
-                                printf("\tEnter id\n"); 
-                                scanf("%d", &id);
-                                while(fread(&b, sizeof(b), 1, fp) == 1)
-                                        issue(&std, &b, fp, fis, id, &found);
-		break;
-		case MENU:
-				mainmenu();
-				return;
+	while(option == 'y' || option == 'Y') {
+		printf("\t\t\t~~~~~~~~ ISSUE BOOKS ~~~~~~~~\n\n");
+		printgen();
+		int c, id, found = 0;
+		scanf("%d",&c);
+		switch(c) {
+			case FICTION : 
+					fp = fopen("Fiction.dat","rb++");
+					fis = fopen("Issuefict.dat","ab+");
+					printf("\tEnter id ");
+					scanf("%d", &id);
+					while(fread(&b, sizeof(b), 1, fp) == 1)
+						issue(&std, &b, fp, fis, id, &found);
+					if(!found) 
+						printf("\tRecord not found\n");
+					break;
+			case NONFICTION :
+					fp = fopen("Nonfiction.dat","rb+"); 
+                	                fis = fopen("Issuenfict.dat","ab+");     
+                        	        printf("\tEnter id "); 
+                               		scanf("%d", &id);
+	                                while(fread(&b, sizeof(b), 1, fp) == 1)
+        	                                issue(&std, &b, fp, fis, id, &found);
+					if(!found) 
+                        	                printf("\tRecord not found\n");
+					break;
+			case REFERENCE :
+					fp = fopen("Reference.dat","rb+"); 
+                	                fis = fopen("Issueref.dat","ab+");     
+                        	        printf("\tEnter id\n"); 
+                                	scanf("%d", &id);
+	                                while(fread(&b, sizeof(b), 1, fp) == 1)
+        	                                issue(&std, &b, fp, fis, id, &found);
+					if(!found) 
+                        	                printf("\tRecord not found\n");
+					break;
+			case SELFHELP:
+					fp = fopen("Selfhelp.dat","rb+"); 
+                        	        fis = fopen("Issuesh.dat","ab+");     
+                                	printf("\tEnter id\n"); 
+	                                scanf("%d", &id);
+        	                        while(fread(&b, sizeof(b), 1, fp) == 1)
+                	                        issue(&std, &b, fp, fis, id, &found);
+					if(!found) 
+                                	        printf("\tRecord not found\n");
+					break;
+			case MENU:
+					mainmenu();
+					return;
 
+		}
+		printf("\tIssue more ? (y/n) ");
+		scanf(" %c", &option);
 	}
 }
