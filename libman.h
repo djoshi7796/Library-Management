@@ -1,3 +1,4 @@
+#define YEAR 1990
 typedef struct books{
     int id;
     char name[20];
@@ -34,5 +35,6 @@ void issuebooks();
 void returnbooks();
 int  getinfo(Book *b);
 void Password();
+struct tm *gettodate();
 int calcfine(date, date);
 

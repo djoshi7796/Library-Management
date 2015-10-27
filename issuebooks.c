@@ -1,7 +1,6 @@
 #include"libman.h"
 #include<stdio.h>
 #include<time.h>
-#define YEAR 1900
 #define RETURN 7
 void issue(student *std, Book *b, FILE *fp, FILE *ft, int id, int *found);
 struct tm *gettodate();
