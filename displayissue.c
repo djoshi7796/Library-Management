@@ -15,37 +15,34 @@
 
 
 #include"libman.h"
-/*This fucntion prints an entry */
-void printbook(Book *b, int col) {
-	init_pair(2,COLOR_GREEN,COLOR_BLACK);
+void printissue(student *std, int col) {
+	init_pair(2,COLOR_MAGENTA,COLOR_BLACK);
 	attron(COLOR_PAIR(2));
 	border(0,0,0,0, 0,0,0,0);
 	refresh();
 	attroff(COLOR_PAIR(2));
 	refresh();
-	mvprintw(col,5,"%d",b->id);
-	mvprintw(col,15, "%s",b->name);
-	mvprintw(col,45,"%s",b->author);
-	mvprintw(col,70,"%d",b->quantity);
-	mvprintw(col,85,"%d",b->rackno);
-	mvprintw(col,100, "%s",b->cat);
-	mvprintw(col,120,"%s",b->subcat);
+	mvprintw(col,5,"%ld",std->roll);
+	mvprintw(col,25, "%s",std->name);
+	mvprintw(col,45,"%d",std->issued.id);
+	mvprintw(col,65,"%s",std->issued.name);
+	mvprintw(col,95,"%d-%d-%d",std->issue_date.day, std->issue_date.month, std->issue_date.year);
+	mvprintw(col,120,"%d-%d-%d",std->due_date.day, std->due_date.month, std->due_date.year);
 	refresh();
 }
-/*This function selects the relevent file */
-void printentry() {
+void displayissue() {
 	refresh();
 	FILE *fp;
 	int c, col = 5;
 	char ch;
-	Book b;
+	student std;
 	printgen();
 	scanw("%d", &c);
 	clear();
 	refresh();
 	init_pair(2,COLOR_WHITE,COLOR_BLACK);
 	attron(COLOR_PAIR(2));
-	mvaddstr(1,60,"~~~~~~ BOOK LIST ~~~~~~");
+	mvaddstr(1,60,"~~~~~~ LIST OF BOOKS ISSUED ~~~~~~");
 	refresh();
 	attroff(COLOR_PAIR(2));
 	refresh();
@@ -54,82 +51,85 @@ void printentry() {
 	border(0,0,0,0, 0,0,0,0);
 	refresh();
 	attroff(COLOR_PAIR(3));
-	mvaddstr(3,5,"ID");
-        mvaddstr(3,15,"NAME");
-        mvaddstr(3,45,"AUTHOR");
-        mvaddstr(3,70,"QUANTITY");
-      	mvaddstr(3,85,"RACKNO");
-        mvaddstr(3,100,"GENRE");
-        mvaddstr(3,120,"SUBGENRE");
 	refresh();
+	mvaddstr(3,5,"ROLL NO");
+	mvaddstr(3,25,"NAME");
+	mvaddstr(3,45,"BOOK ID");
+	mvaddstr(3,65,"BOOK NAME");
+	mvaddstr(3,95,"ISSUE DATE");
+	mvaddstr(3,120,"DUE DATE");
 	switch(c) {
 		case FICTION :
-				fp = fopen("Fiction.dat","rb");
-				if(fp == NULL ) {
-					mvaddstr(6,48,"~ ~ ~ ~ No books under this genre ~ ~ ~ ~");
-					mvaddstr(9,48,"~ ~ ~ ~ Press ENTER to go back to main menu ~ ~ ~ ~ ");
+				fp = fopen("Issuefict.dat","rb");
+				if(fp == NULL) {
+					mvaddstr(6, 48, "~ ~ ~ ~ No books have been issued in this genre ~ ~ ~ ~");
+					mvaddstr(9,48, "~ ~ ~ ~ Press ENTER to return to main menu ~ ~ ~ ~");
 					getch();
 					mainmenu();
 					return;
-				}	
-				while(fread(&b, sizeof(b), 1, fp) == 1){
-					printbook(&b, col);
+				}
+				while(fread(&std, sizeof(std), 1, fp) == 1){
+					printissue(&std, col);
 					col++;
 				}
+				fclose(fp);
 				mvprintw(30,12,"Press enter to go to main menu");
 				getch();
 				refresh();
 				mainmenu();
 				break;
 		case NONFICTION : 
-				fp = fopen("Nonfiction.dat","rb");
-				if(fp == NULL ) {
-                                        mvaddstr(6,48,"~ ~ ~ ~ No books under this genre ~ ~ ~ ~");
-                                        mvaddstr(9,48,"~ ~ ~ ~ Press ENTER to go back to main menu ~ ~ ~ ~ ");
+				fp = fopen("Issuenfict.dat","rb");
+				if(fp == NULL) {
+                                        mvaddstr(6, 48, "~ ~ ~ ~ No books have been issued in this genre ~ ~ ~ ~");
+                                        mvaddstr(9,48, "~ ~ ~ ~ Press ENTER to return to main menu ~ ~ ~ ~");
                                         getch();
                                         mainmenu();
                                         return;
                                 }
-                                while(fread(&b, sizeof(b), 1, fp) == 1) {
-                                        printbook(&b, col);
+                                while(fread(&std, sizeof(std), 1, fp) == 1) {
+                                        printissue(&std, col);
 					col++;
                                 }
+				fclose(fp);
 				mvprintw(30,12,"Press enter to go to main menu");
                                 getch();
                                 refresh();
                                 mainmenu();
 				break;
 		case REFERENCE :
-				fp = fopen("Reference.dat","rb");
-				if(fp == NULL ) {
-                                        mvaddstr(6,48,"~ ~ ~ ~ No books under this genre ~ ~ ~ ~");
-                                        mvaddstr(9,48,"~ ~ ~ ~ Press ENTER to go back to main menu ~ ~ ~ ~ ");
+				 fp = fopen("Issueref.dat","rb");
+				 if(fp == NULL) {
+                                        mvaddstr(6, 48, "~ ~ ~ ~ No books have been issued in this genre ~ ~ ~ ~");
+                                        mvaddstr(9,48, "~ ~ ~ ~ Press ENTER to return to main menu ~ ~ ~ ~");
                                         getch();
                                         mainmenu();
                                         return;
                                 }
-                                while(fread(&b, sizeof(b), 1, fp) == 1) {
-                                       printbook(&b, col);
-				       col++;
+                                while(fread(&std, sizeof(std), 1, fp) == 1) {
+                                        printissue(&std, col);
+					col++;
                                 }
+				fclose(fp);
 				mvprintw(30,12,"Press enter to go to main menu");
                                 getch();
                                 refresh();
                                 mainmenu();
 				break;
 		case SELFHELP :
-				fp = fopen("Selfhelp.dat","rb");
-				if(fp == NULL ) {
-                                        mvaddstr(6,48,"~ ~ ~ ~ No books under this genre ~ ~ ~ ~");
-                                        mvaddstr(9,48,"~ ~ ~ ~ Press ENTER to go back to main menu ~ ~ ~ ~ ");
+				fp = fopen("Issuesh.dat","rb");
+				if(fp == NULL) {
+                                        mvaddstr(6, 48, "~ ~ ~ ~ No books have been issued in this genre ~ ~ ~ ~");
+                                        mvaddstr(9,48, "~ ~ ~ ~ Press ENTER to return to main menu ~ ~ ~ ~");
                                         getch();
                                         mainmenu();
                                         return;
                                 }
-                               	while(fread(&b, sizeof(b), 1, fp) == 1) {
-                                        printbook(&b, col);
+                               	while(fread(&std, sizeof(std), 1, fp) == 1) {
+                                        printissue(&std, col);
 					col++;
                                 }
+				fclose(fp);
 				mvprintw(30,12,"Press enter to go to main menu");
                                 getch();
                                 refresh();
